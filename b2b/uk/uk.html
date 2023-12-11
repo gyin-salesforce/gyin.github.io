@@ -191,7 +191,8 @@
             }
 
             function callBot(webTeamObj) {
-
+                console.log('here ',webTeamObj.languageCode);
+                console.log('here botObj ',botObj);
                 let thisBot = botObj[webTeamObj.languageCode];
                 console.log('callbot thisBot ',thisBot,botHomeURL + thisBot.esdSiteAPIName + botBootStartPath)
 
