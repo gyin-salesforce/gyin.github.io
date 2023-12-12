@@ -148,13 +148,13 @@
         <!-- Spinner -->
         <script type="text/javascript">
 
-            let botHomeURL = "https://specialized--staging.sandbox.my.site.com/";   // experience site domain
-            let botBootStartPath = "/assets/js/bootstrap.min.js";
-            let botScrtURL = "https://specialized--staging.sandbox.my.salesforce-scrt.com";  // scrt url from embeded code
-            let sfOrgId = "00D3I0000000ey3";    // salesforce instance id
-            var globalBotObj;
+            var botHomeURL = "https://specialized--staging.sandbox.my.site.com/";   // experience site domain
+            var botBootStartPath = "/assets/js/bootstrap.min.js";
+            var botScrtURL = "https://specialized--staging.sandbox.my.salesforce-scrt.com";  // scrt url from embeded code
+            var sfOrgId = "00D3I0000000ey3";    // salesforce instance id
+            var webTeamObj;
 
-            let botObj = {
+            var botObj = {
                 
                 "en_GB": {
 
@@ -191,12 +191,12 @@
 
             function callBot(webTeamObj) {
 
-                let thisBot = botObj[webTeamObj.languageCode];
+                var thisBot = botObj[webTeamObj.languageCode];
                 console.log('callbot thisBot ',thisBot,botHomeURL + thisBot.esdSiteAPIName + botBootStartPath)
 
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
-                script.onload = (event) => {
+                script.onload = function() {
                     initEmbeddedMessaging(webTeamObj, thisBot);
                 }
                 script.src = botHomeURL + thisBot.esdSiteAPIName + botBootStartPath;
@@ -207,27 +207,27 @@
             function initEmbeddedMessaging(webTeamObj, thisBot) {
                 try {
 
-                    globalBotObj = {...webTeamObj}
 
-                    embeddedservice_bootstrap.settings.language = globalBotObj.languageCode; // For example, enter 'en' or 'en_US'
 
-                    window.addEventListener("onEmbeddedMessagingReady", () => {
+                    embeddedservice_bootstrap.settings.language = webTeamObj.languageCode; // For example, enter 'en' or 'en_US'
+
+                    window.addEventListener("onEmbeddedMessagingReady", function() {
 
                         embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-                            "SB_SF_Country_Code": globalBotObj.countryCode,
-                            "SB_SF_Language_Code": globalBotObj.languageCode,
-                            "SB_SF_Customer_Number" : globalBotObj.userId,
-                            "SB_SF_User_Name" : globalBotObj.userName,
-                            "SB_SF_Webpage_URL" : globalBotObj.pageURL
+                            "SB_SF_Country_Code": webTeamObj.countryCode,
+                            "SB_SF_Language_Code": webTeamObj.languageCode,
+                            "SB_SF_Customer_Number" : webTeamObj.userId,
+                            "SB_SF_User_Name" : webTeamObj.userName,
+                            "SB_SF_Webpage_URL" : webTeamObj.pageURL
                         });
 
-                        let btnState =
+                        var btnState =
                             document.querySelector("#launchChatButton").disabled;
                         if (btnState) {
                             //Open
-                            window.setTimeout(() => {
+                            window.setTimeout(function() {
                                 //Timeout added to check the state of existing messaging session.
-                                let chatWindow = document.querySelector(
+                                var chatWindow = document.querySelector(
                                     '[title="Chat with an Agent"]'
                                 );
                                 console.log({ chatWindow });
@@ -256,11 +256,11 @@
                 }
             }
 
-            window.onload = (event) => {
+            window.onload = function(){
                 console.log("page is fully loaded");
-                let arr  = window.location.pathname.split('/')
+                var arr  = window.location.pathname.split('/')
                 console.log(arr)
-                let sfLocationCodes = {
+                var sfLocationCodes = {
                     'gb-en' : 'en_GB',
                     'en' : 'en_US',
                     'pt' : 'pt_PT',
@@ -269,7 +269,7 @@
                 countryCode = arr[3]
                 languageCode = arr[4]
                 console.log({countryCode}, {languageCode})
-                let webTeamObj = {
+                var webTeamObj = {
                     languageCode: sfLocationCodes[`${countryCode}-${languageCode}`] ? sfLocationCodes[`${countryCode}-${languageCode}`] :
                                                 sfLocationCodes[languageCode] ? sfLocationCodes[languageCode] : languageCode,
                     countryCode: countryCode,
@@ -288,14 +288,14 @@
                 enableSpinner();
                 embeddedservice_bootstrap.utilAPI
                     .launchChat()
-                    .then(() => {
+                    .then(function() {
                         // Success handler used to perform actions
                         // when the chat client launches successfully.
                         // For example, create a method that disables the launch chat button.
                         console.log('at then ', embeddedservice_bootstrap);
                         disableSpinner();
                     })
-                    .catch(() => {
+                    .catch(function() {
                         // Error handler used to perform actions
                         // if the chat client fails to launch.
                         // For example, create a method that hides the launch chat button.
@@ -303,7 +303,7 @@
                         console.error("Error catch");
                         enableLaunchChatButton();
                     })
-                    .finally(() => {
+                    .finally(function() {
                         // Finally handler used to perform any clean-up actions
                         // regardless of whether the chat client launches successfully or not.
                         // For example, create a method that logs the user’s attempt to chat.
@@ -312,21 +312,21 @@
                     });
             }
             function disableLaunchChatButton() {
-                let btn = document.querySelector("#launchChatButton");
+                var btn = document.querySelector("#launchChatButton");
                 btn.disabled = true;
                 btn.classList.add("hide");
             }
             function enableLaunchChatButton() {
-                let btn = document.querySelector("#launchChatButton");
+                var btn = document.querySelector("#launchChatButton");
                 btn.disabled = false;
                 btn.classList.remove("hide");
             }
             function disableSpinner() {
-                let btn = document.querySelector("#spinner");
+                var btn = document.querySelector("#spinner");
                 btn.classList.add("hide");
             }
             function enableSpinner() {
-                let btn = document.querySelector("#spinner");
+                var btn = document.querySelector("#spinner");
                 btn.classList.remove("hide");
             }
         </script>
