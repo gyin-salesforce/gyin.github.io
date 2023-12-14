@@ -189,7 +189,21 @@
                 }
             }
 
+            let webLanguageCode = {
+              "en-US" : "en_US",
+              "en-GB" : "en_GB",
+              "en-AU" : "en_AU",
+              "es-ES" : "es",
+              "pt-PT" : "pt_PT",
+              "it-IT" : "it",
+              "de-DE" : "de",
+              "nl-NL" : "nl_NL",
+              "fr-FR" : "fr"
+            }
+
             function callBot(webTeamObj) {
+
+                webTeamObj.languageCode = webLanguageCode[webTeamObj.languageCode] ? webLanguageCode[webTeamObj.languageCode] : "en_US";
 
                 let thisBot = botObj[webTeamObj.languageCode];
                 console.log('callbot thisBot ',thisBot,botHomeURL + thisBot.esdSiteAPIName + botBootStartPath)
@@ -270,8 +284,7 @@
                 languageCode = arr[4]
                 console.log({countryCode}, {languageCode})
                 let webTeamObj = {
-                    languageCode: sfLocationCodes[`${countryCode}-${languageCode}`] ? sfLocationCodes[`${countryCode}-${languageCode}`] :
-                                                sfLocationCodes[languageCode] ? sfLocationCodes[languageCode] : languageCode,
+                    languageCode: languageCode,
                     countryCode: countryCode,
                     pageURL: window.location.href
                 }
