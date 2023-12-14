@@ -156,9 +156,8 @@
 
             let botObj = {
                 
-                "en_GB": {                                                      // this key is language code
-                    esdAPIName: "SB_SF_B2B_SKILL_ENGLISH",
-                    esdSiteAPIName: "ESWSBSFB2bSkillEnglis1702290279871"
+                "en_GB": {
+
                 },
                 "pt_PT": {
                     //Portgueuse (Europeone)
@@ -189,8 +188,22 @@
                     
                 }
             }
+            
+            let webLanguageCode = {
+              "en-US" : "en_US",
+              "en-GB" : "en_GB",
+              "en-AU" : "en_AU",
+              "es-ES" : "es",
+              "pt-PT" : "pt_PT",
+              "it-IT" : "it",
+              "de-DE" : "de",
+              "nl-NL" : "nl_NL",
+              "fr-FR" : "fr"
+            }
 
             function callBot(webTeamObj) {
+
+                webTeamObj.languageCode = webLanguageCode[webTeamObj.languageCode] ? webLanguageCode[webTeamObj.languageCode] : "en_US";
 
                 let thisBot = botObj[webTeamObj.languageCode];
                 console.log('callbot thisBot ',thisBot,botHomeURL + thisBot.esdSiteAPIName + botBootStartPath)
@@ -261,18 +274,11 @@
                 console.log("page is fully loaded");
                 let arr  = window.location.pathname.split('/')
                 console.log(arr)
-                let sfLocationCodes = {
-                    'gb-en' : 'en_GB',
-                    'en' : 'en_US',
-                    'pt' : 'pt_PT',
-                    'nl' : 'nl_NL',
-                }
                 countryCode = arr[3]
                 languageCode = arr[4]
                 console.log({countryCode}, {languageCode})
                 let webTeamObj = {
-                    languageCode: sfLocationCodes[`${countryCode}-${languageCode}`] ? sfLocationCodes[`${countryCode}-${languageCode}`] :
-                                                sfLocationCodes[languageCode] ? sfLocationCodes[languageCode] : languageCode,
+                    languageCode: languageCode,
                     countryCode: countryCode,
                     pageURL: window.location.href
                 }
