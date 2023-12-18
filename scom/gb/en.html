@@ -266,7 +266,7 @@
                 languageCode = arr[4]
                 console.log({countryCode}, {languageCode})
                 var webTeamObj = {
-                    languageCode: sfLocationCodes[`${countryCode}-${languageCode}`] ? sfLocationCodes[`${countryCode}-${languageCode}`] :
+                    languageCode: sfLocationCodes[countryCode + '-' + languageCode] ? sfLocationCodes[countryCode + '-' + languageCode] :
                                                 sfLocationCodes[languageCode] ? sfLocationCodes[languageCode] : languageCode,
                     countryCode: countryCode,
                     pageURL: window.location.href
