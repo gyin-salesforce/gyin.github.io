@@ -1,11 +1,11 @@
 <html>
 
 <head>
-    <title> B2B Specialized Skill Bot</title>
+    <title>B2B Bot</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet" />
     <style>
         * {
             font-family: 'Roboto', sans-serif;
@@ -113,68 +113,12 @@
             right: 6.2rem;
             bottom: 2.8rem;
         }
-
-        /* Styling required */
-
-        .hide {
-            display: none;
-        }
-
-        .spinner {
-            width: 8px;
-            height: 8px;
-            border-radius: 8px;
-            box-shadow: 20px 0px 0 0 rgba(0, 0, 0, 0.2), 16.2px 11.8px 0 0 rgba(0, 0, 0, 0.4), 6.2px 19px 0 0 rgba(0, 0, 0, 0.6), -6.2px 19px 0 0 rgba(0, 0, 0, 0.8), -16.2px 11.8px 0 0 #000000;
-            animation: spinner-b87k6z 1s infinite linear;
-        }
-
-        @keyframes spinner-b87k6z {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .chatBtn-left {
-            border: 0;
-            background: transparent;
-            padding: 0;
-            cursor: pointer;
-            position: fixed;
-            bottom: 1.6rem;
-            left: 1.9rem;
-            overflow: hidden;
-            pointer-events: all;
-        }
-
-        .chatBtn-right {
-            border: 0;
-            background: transparent;
-            padding: 0;
-            cursor: pointer;
-            position: fixed;
-            bottom: 1.6rem;
-            right: 1.9rem;
-            overflow: hidden;
-            pointer-events: all;
-        }
-
-        .spinner-left {
-            position: fixed;
-            left: 6.2rem;
-            bottom: 2.8rem;
-        }
-
-        .spinner-right {
-            position: fixed;
-            right: 6.2rem;
-            bottom: 2.8rem;
-        }
     </style>
 </head>
 
 <body>
     <div class="parent">
-        <h1>B2B Specialized Skill Bot</h1>
+        <h1>B2B Bot (UAT)</h1>
         <!-- Custom Chat Button  -->
         <button onclick="handleBtn();" class="chatBtn-right hide" disabled id="launchChatButton">
             <svg width="142" height="50" viewBox="0 0 142 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -211,6 +155,7 @@
             var globalBotObj;
 
             let botObj = {
+
                 "en_GB": {
 
                 },
@@ -268,11 +213,10 @@
 
             function callBot(webTeamObj) {
 
-                console.log('callBot ', webTeamObj);
-
                 webTeamObj.languageCode = webLanguageCode[webTeamObj.languageCode] ? webLanguageCode[webTeamObj.languageCode] : "en_US";
 
                 let thisBot = botObj[webTeamObj.languageCode];
+                console.log('callbot thisBot ', thisBot, botHomeURL + thisBot.esdSiteAPIName + botBootStartPath)
 
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
@@ -285,16 +229,22 @@
             }
 
             function initEmbeddedMessaging(webTeamObj, thisBot) {
-
-                console.log('initEmbeddedMessaging ', webTeamObj);
-
                 try {
+
                     globalBotObj = { ...webTeamObj }
+
                     embeddedservice_bootstrap.settings.language = globalBotObj.languageCode; // For example, enter 'en' or 'en_US'
+
                     window.addEventListener("onEmbeddedMessagingReady", () => {
 
+                        embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+                            "SB_SF_Country_Code": globalBotObj.countryCode,
+                            "SB_SF_Language_Code": globalBotObj.languageCode,
+                            "SB_SF_Customer_Number": globalBotObj.userId,
+                            "SB_SF_User_Name": globalBotObj.userName,
+                            "SB_SF_Webpage_URL": globalBotObj.pageURL
+                        });
 
-                        console.log("Received the onEmbeddedMessagingReady event…");
                         let btnState =
                             document.querySelector("#launchChatButton").disabled;
                         if (btnState) {
@@ -313,19 +263,9 @@
                             }, 1000);
                         }
 
-
-                        embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-                            "SB_SF_Country_Code": globalBotObj.countryCode,
-                            "SB_SF_Language_Code": globalBotObj.languageCode,
-                            "SB_SF_Customer_Number": globalBotObj.userId,
-                            "SB_SF_User_Name": globalBotObj.userName,
-                            "SB_SF_Webpage_URL": globalBotObj.pageURL
-                        });
                     });
 
                     embeddedservice_bootstrap.settings.hideChatButtonOnLoad = true; //Hides the chat icon on load
-                    // embeddedservice_bootstrap.settings.hideChatButtonOnLoad = false; //Shows the chat icon on load.
-
 
                     embeddedservice_bootstrap.init(
                         sfOrgId,
@@ -336,28 +276,26 @@
                         }
                     );
                 } catch (err) {
-                    console.error('Error loading Embedded Messaging: ', err);
+                    console.error("Error loading Embedded Messaging: ", err);
                 }
-            };
-
-            window.addEventListener("onEmbeddedMessagingIdentityTokenExpired", () => {
-
-                console.log("Received the onEmbeddedMessagingIdentityTokenExpired event…");
-
-            });
+            }
 
             window.onload = (event) => {
                 console.log("page is fully loaded");
+                let arr = window.location.pathname.split('/')
+                console.log(arr)
+                countryCode = arr[3]
+                languageCode = arr[4]
+                console.log({ countryCode }, { languageCode })
                 let webTeamObj = {
-                    languageCode: "en-CA",
-                    countryCode: "CA",
-                    userName: "test@testuser.com",
-                    userId: "test123",
+                    languageCode: languageCode,
+                    countryCode: countryCode,
                     pageURL: window.location.href
                 }
                 console.log('onload ', webTeamObj);
                 callBot(webTeamObj);                   // this function to be called by webteam
             };
+
         </script>
 
         <script>
@@ -371,7 +309,7 @@
                         // Success handler used to perform actions
                         // when the chat client launches successfully.
                         // For example, create a method that disables the launch chat button.
-                        console.log("then called");
+                        console.log('at then ', embeddedservice_bootstrap);
                         disableSpinner();
                     })
                     .catch(() => {
@@ -409,8 +347,6 @@
                 btn.classList.remove("hide");
             }
         </script>
-
-
     </div>
 </body>
 
