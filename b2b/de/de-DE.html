@@ -155,7 +155,7 @@
             var globalBotObj;
 
             let botObj = {
-                
+
                 "en_GB": {
 
                 },
@@ -176,29 +176,39 @@
                     esdAPIName: "SB_SF_B2B_SKILL_GERMAN",
                     esdSiteAPIName: "ESWSBSFB2bSkillGerman1701842323370"
                 },
-                "es":{
+                "es": {
                     esdAPIName: "SB_SF_B2b_Skill_Spanish",
                     esdSiteAPIName: "ESWSBSFB2bSkillSpanis1701842778346"
                 },
-                "nl_NL":{
+                "nl_NL": {
                     esdAPIName: "SB_SF_B2b_Skill_Dutch",
                     esdSiteAPIName: "ESWSBSFB2bSkillDutch1701841793815"
                 },
-                "it":{
-                    
+                "it": {
+
+                },
+                "en_CA": {
+                    esdAPIName: "SB_SF_B2b_Skill_English",
+                    esdSiteAPIName: "ESWSBSFB2bSkillEnglis1700136678702"
+                },
+                "fr_CA": {
+                    esdAPIName: "SB_SF_B2b_Skill_French",
+                    esdSiteAPIName: "ESWSBSFB2bSkillFrench1701842184770"
                 }
             }
 
             let webLanguageCode = {
-              "en-US" : "en_US",
-              "en-GB" : "en_GB",
-              "en-AU" : "en_AU",
-              "es-ES" : "es",
-              "pt-PT" : "pt_PT",
-              "it-IT" : "it",
-              "de-DE" : "de",
-              "nl-NL" : "nl_NL",
-              "fr-FR" : "fr"
+                "en-US": "en_US",
+                "en-GB": "en_GB",
+                "en-AU": "en_AU",
+                "es-ES": "es",
+                "pt-PT": "pt_PT",
+                "it-IT": "it",
+                "de-DE": "de",
+                "nl-NL": "nl_NL",
+                "fr-FR": "fr",
+                "en-CA": "en_CA",
+                "fr-CA": "fr_CA"
             }
 
             function callBot(webTeamObj) {
@@ -206,7 +216,7 @@
                 webTeamObj.languageCode = webLanguageCode[webTeamObj.languageCode] ? webLanguageCode[webTeamObj.languageCode] : "en_US";
 
                 let thisBot = botObj[webTeamObj.languageCode];
-                console.log('callbot thisBot ',thisBot,botHomeURL + thisBot.esdSiteAPIName + botBootStartPath)
+                console.log('callbot thisBot ', thisBot, botHomeURL + thisBot.esdSiteAPIName + botBootStartPath)
 
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
@@ -221,7 +231,7 @@
             function initEmbeddedMessaging(webTeamObj, thisBot) {
                 try {
 
-                    globalBotObj = {...webTeamObj}
+                    globalBotObj = { ...webTeamObj }
 
                     embeddedservice_bootstrap.settings.language = globalBotObj.languageCode; // For example, enter 'en' or 'en_US'
 
@@ -230,10 +240,10 @@
                         embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
                             "SB_SF_Country_Code": globalBotObj.countryCode,
                             "SB_SF_Language_Code": globalBotObj.languageCode,
-                            "SB_SF_Customer_Number" : globalBotObj.userId,
-                            "SB_SF_User_Name" : globalBotObj.userName,
-                            "SB_SF_Webpage_URL" : globalBotObj.pageURL
-                    });
+                            "SB_SF_Customer_Number": globalBotObj.userId,
+                            "SB_SF_User_Name": globalBotObj.userName,
+                            "SB_SF_Webpage_URL": globalBotObj.pageURL
+                        });
 
                         let btnState =
                             document.querySelector("#launchChatButton").disabled;
@@ -272,11 +282,11 @@
 
             window.onload = (event) => {
                 console.log("page is fully loaded");
-                let arr  = window.location.pathname.split('/')
+                let arr = window.location.pathname.split('/')
                 console.log(arr)
                 countryCode = arr[3]
                 languageCode = arr[4]
-                console.log({countryCode}, {languageCode})
+                console.log({ countryCode }, { languageCode })
                 let webTeamObj = {
                     languageCode: languageCode,
                     countryCode: countryCode,
