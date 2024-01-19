@@ -194,7 +194,15 @@
                 "fr_CA": {
                     esdAPIName: "SB_SF_S_Com_Menu_French",
                     esdSiteAPIName: "ESWSBSFSComMenuFrenc1701849761746"
-                }
+                },
+                "en_AU": {                                                      // this key is language code
+                    esdAPIName: "SB_SF_S_Com_Intent_English_US",
+                    esdSiteAPIName: "ESWSBSFSComIntentEng1702271375844"
+                },
+                "en_NZ": {                                                      // this key is language code
+                    esdAPIName: "SB_SF_S_Com_Intent_English_US",
+                    esdSiteAPIName: "ESWSBSFSComIntentEng1702271375844"
+                },
             }
 
             function callBot(webTeamObj) {
@@ -264,13 +272,15 @@
                 console.log("page is fully loaded");
                 var arr  = window.location.pathname.split('/')
                 console.log(arr)
-                var sfLocationCodes = {
+                let sfLocationCodes = {
                     'gb-en' : 'en_GB',
                     'en' : 'en_US',
                     'pt' : 'pt_PT',
                     'nl' : 'nl_NL',
-                    'en-CA' : 'en_CA',
-                    'fr-CA' : 'fr_CA'
+                    'ca-en' : 'en_CA',
+                    'ca-fr' : 'fr_CA',
+                    'au-en' : 'en_AU',
+                    'nz-en' : 'en_NZ'
                 }
                 countryCode = arr[3]
                 languageCode = arr[4]
